@@ -1,0 +1,43 @@
+# Miljø og cache
+.pixi/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.egg-info/
+
+# Hemmeligheter (API-nøkler, passord)
+.env
+.env.*
+*.key
+*.pem
+secrets*
+config.local.*
+
+# Prosjektdata og resultater (kan være sensitivt)
+testdata/
+samples/
+*_temp/
+basedata-project-pack_temp/
+_basedata/
+*.db
+*.sqlite
+output/
+results/
+export/
+
+# Store/binære datafiler
+*.las
+*.laz
+*.tif
+*.tiff
+*.dwg
+*.ifc
+*.sos
+*.zip
+
+# Editor og system
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

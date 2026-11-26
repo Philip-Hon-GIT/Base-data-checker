@@ -1,0 +1,69 @@
+# Standard regelsett v1.0 – et EKSEMPEL å starte fra.
+# Erstatt hver `source` med riktig punkt i kontrakten, byggherrens BIM-krav eller gjeldende håndbok
+# (f.eks. Statens vegvesen V770), og la en fagperson godkjenne listen. Regelsettet kan redigeres i appen.
+# `check`: auto (innebygd kode), ai (AI vurderer ut fra teksten og veiledningen), manual (KS-ansvarlig).
+# `if_failed` setter resultatet når regelen brytes. `params` justerer grensene for innebygde sjekker.
+version: v1.0
+title: Krav til grunnlagsdata (eksempel)
+rules:
+  - id: R-CRS-01
+    text: Horisontalt koordinatsystem er oppgitt og samsvarer med prosjektets
+    source: "Kontrakt pkt. x.x / V770 – avklar punkt"
+    applies_to: [fkb, terrain, point_cloud, orthophoto, utility, ground_investigation, model, drawing, plan_data]
+    check: auto
+    if_failed: deviation
+  - id: R-CRS-02
+    text: Høydesystem er oppgitt og samsvarer med prosjektets
+    source: "Kontrakt pkt. x.x / V770 – avklar punkt"
+    applies_to: [fkb, terrain, point_cloud, drawing, model, ground_investigation]
+    check: auto
+    if_failed: deviation
+  - id: R-CRS-03
+    text: Koordinatene er troverdige for oppgitt koordinatsystem og ligger ved prosjektet
+    source: "Internt kvalitetssystem"
+    applies_to: [fkb, terrain, point_cloud, orthophoto, utility, ground_investigation, model, drawing, plan_data]
+    check: auto
+    if_failed: deviation
+  - id: R-EXT-01
+    text: Dataene dekker prosjektområdet
+    source: "Kontrakt pkt. x.x – avklar avtalt buffer"
+    applies_to: [fkb, terrain]
+    check: auto
+    if_failed: warning
+    params: {min_coverage_pct: 95}
+  - id: R-SRC-01
+    text: Kilde og leverandør er dokumentert
+    source: "V770 – avklar punkt"
+    applies_to: [all]
+    check: auto
+    if_failed: missing_info
+  - id: R-DATE-01
+    text: Dato for innsamling eller oppdatering er oppgitt og innenfor prosjektets aldersgrense
+    source: "Kontrakt pkt. x.x – avklar aldersgrense"
+    applies_to: [all]
+    check: auto
+    if_failed: warning
+  - id: R-FMT-01
+    text: Filformatet er på prosjektets liste over godkjente formater
+    source: "Kontrakt pkt. x.x"
+    applies_to: [all]
+    check: auto
+    if_failed: deviation
+  - id: R-REF-01
+    text: Terrengdata stemmer med godkjent referanse i plassering og høyde
+    source: "Internt kvalitetssystem – avklar toleranser"
+    applies_to: [terrain, point_cloud]
+    check: auto
+    if_failed: deviation
+    params: {max_mean_offset_m: 0.10, max_std_m: 0.15, change_threshold_m: 0.5, max_changed_area_m2: 500}
+  - id: R-QUA-01
+    text: Nøyaktighet eller kvalitetsklasse er oppgitt og tilstrekkelig for prosjektfasen
+    source: "V770 / byggherrens BIM-krav – avklar punkt"
+    applies_to: [fkb, terrain, point_cloud, orthophoto, utility, ground_investigation, model, drawing, plan_data]
+    check: ai
+    if_failed: deviation
+    guidance: >
+      Vurder om oppgitt nøyaktighet, oppløsning, punkttetthet eller kvalitetsklasse er tilstrekkelig for
+      prosjektfasen. Vanlige forventninger i reguleringsplan: ortofoto 0,25 m piksler eller finere;
+      terrengmodell 2 m rutenett eller finere; punktsky minst 5 punkter/m²; FKB-A eller FKB-B (ca. 10–20 cm).
+      Står det ingenting om nøyaktighet i metadata eller tekst, er resultatet missing_info.

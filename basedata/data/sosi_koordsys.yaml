@@ -1,0 +1,51 @@
+# SOSI KOORDSYS code -> EPSG code.
+# CHECK THIS TABLE against Kartverket's SOSI documentation ("SOSI del 1, Koordinatsystem") before
+# relying on it. Add codes you meet in real deliveries.
+koordsys:
+  1:  {epsg: 27391, name: "NGO1948 akse I"}
+  2:  {epsg: 27392, name: "NGO1948 akse II"}
+  3:  {epsg: 27393, name: "NGO1948 akse III"}
+  4:  {epsg: 27394, name: "NGO1948 akse IV"}
+  5:  {epsg: 27395, name: "NGO1948 akse V"}
+  6:  {epsg: 27396, name: "NGO1948 akse VI"}
+  7:  {epsg: 27397, name: "NGO1948 akse VII"}
+  8:  {epsg: 27398, name: "NGO1948 akse VIII"}
+  21: {epsg: 25831, name: "EUREF89 UTM sone 31"}
+  22: {epsg: 25832, name: "EUREF89 UTM sone 32"}
+  23: {epsg: 25833, name: "EUREF89 UTM sone 33"}
+  24: {epsg: 25834, name: "EUREF89 UTM sone 34"}
+  25: {epsg: 25835, name: "EUREF89 UTM sone 35"}
+  26: {epsg: 25836, name: "EUREF89 UTM sone 36"}
+  31: {epsg: 23031, name: "ED50 UTM sone 31"}
+  32: {epsg: 23032, name: "ED50 UTM sone 32"}
+  33: {epsg: 23033, name: "ED50 UTM sone 33"}
+  34: {epsg: 23034, name: "ED50 UTM sone 34"}
+  35: {epsg: 23035, name: "ED50 UTM sone 35"}
+  36: {epsg: 23036, name: "ED50 UTM sone 36"}
+  84: {epsg: 4258,  name: "EUREF89 geografisk"}
+  105: {epsg: 5105, name: "EUREF89 NTM sone 5"}
+  106: {epsg: 5106, name: "EUREF89 NTM sone 6"}
+  107: {epsg: 5107, name: "EUREF89 NTM sone 7"}
+  108: {epsg: 5108, name: "EUREF89 NTM sone 8"}
+  109: {epsg: 5109, name: "EUREF89 NTM sone 9"}
+  110: {epsg: 5110, name: "EUREF89 NTM sone 10"}
+  111: {epsg: 5111, name: "EUREF89 NTM sone 11"}
+  112: {epsg: 5112, name: "EUREF89 NTM sone 12"}
+  113: {epsg: 5113, name: "EUREF89 NTM sone 13"}
+  114: {epsg: 5114, name: "EUREF89 NTM sone 14"}
+  115: {epsg: 5115, name: "EUREF89 NTM sone 15"}
+  116: {epsg: 5116, name: "EUREF89 NTM sone 16"}
+  117: {epsg: 5117, name: "EUREF89 NTM sone 17"}
+  118: {epsg: 5118, name: "EUREF89 NTM sone 18"}
+  119: {epsg: 5119, name: "EUREF89 NTM sone 19"}
+  120: {epsg: 5120, name: "EUREF89 NTM sone 20"}
+  121: {epsg: 5121, name: "EUREF89 NTM sone 21"}
+  122: {epsg: 5122, name: "EUREF89 NTM sone 22"}
+  123: {epsg: 5123, name: "EUREF89 NTM sone 23"}
+  124: {epsg: 5124, name: "EUREF89 NTM sone 24"}
+  125: {epsg: 5125, name: "EUREF89 NTM sone 25"}
+  126: {epsg: 5126, name: "EUREF89 NTM sone 26"}
+  127: {epsg: 5127, name: "EUREF89 NTM sone 27"}
+  128: {epsg: 5128, name: "EUREF89 NTM sone 28"}
+  129: {epsg: 5129, name: "EUREF89 NTM sone 29"}
+  130: {epsg: 5130, name: "EUREF89 NTM sone 30"}

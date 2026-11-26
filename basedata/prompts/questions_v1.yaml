@@ -1,0 +1,47 @@
+# Spørsmål til opplaster. Endre ordlyden fritt. {file} er filnavnet eller pakkenavnet; i pakker er
+# {count} antall filer spørsmålet gjelder og {total} antall filer i pakken.
+dont_know: "Vet ikke"
+max_per_entry: 5
+horizontal_epsg:
+  ask: "Hvilket koordinatsystem er {file} i?"
+  ask_package: "{count} av {total} filer i {file} mangler koordinatsystem. Hvilket koordinatsystem er de i?"
+  contradiction: "{file} oppgir {declared}, men {reason}. Hva er riktig?"
+  contradiction_package: "{count} av {total} filer i {file} oppgir {declared}, men {reason}. Hva er riktig?"
+  reason_fits: "koordinatene passer med {candidate}"
+  reason_form: "skjemaet sier {candidate}"
+  choices:
+    - "EPSG:25832 – EUREF89 UTM32"
+    - "EPSG:25833 – EUREF89 UTM33"
+    - "EPSG:25835 – EUREF89 UTM35"
+    - "Lokale koordinater"
+  fits_suffix: " (koordinatene passer)"
+  file_suffix: " (som oppgitt i fila)"
+  form_suffix: " (som oppgitt i skjemaet)"
+height_reference:
+  ask: "Hvilket høydesystem bruker høydene i {file}?"
+  ask_package: "{count} av {total} filer i {file} mangler høydesystem. Hvilket bruker de?"
+  contradiction: "{file} oppgir {declared}, men skjemaet sier {candidate}. Hva er riktig?"
+  choices: ["NN2000", "NN1954", "Ellipsoidisk høyde", "Ingen høyder i fila"]
+  file_suffix: " (som oppgitt i fila)"
+  form_suffix: " (som oppgitt i skjemaet)"
+data_date:
+  ask: "Når ble dataene i {file} samlet inn eller sist oppdatert?"
+  ask_package: "Når ble dataene i {file} samlet inn eller sist oppdatert? ({count} av {total} filer mangler dato)"
+  contradiction: "{file} oppgir {declared}, men skjemaet sier {candidate}. Hva er riktig?"
+  hint: "For eksempel 2024-05 eller 12.05.2024"
+  file_suffix: " (som oppgitt i fila)"
+  form_suffix: " (som oppgitt i skjemaet)"
+source:
+  ask: "Hvem har produsert dataene i {file}, og hvor har du fått dem fra?"
+  ask_package: "Hvem har produsert dataene i {file}, og hvor har du fått dem fra? ({count} av {total} filer mangler kilde)"
+  contradiction: "{file} oppgir {declared}, men skjemaet sier {candidate}. Hva er riktig?"
+  hint: "Firma eller organisasjon, og hvordan du fikk dataene"
+  file_suffix: " (som oppgitt i fila)"
+  form_suffix: " (som oppgitt i skjemaet)"
+quality:
+  ask: "Har du opplysninger om nøyaktigheten til {file} – FKB-standard, punkttetthet eller en innmålingsrapport?"
+  ask_package: "Har du opplysninger om nøyaktigheten til {file} – FKB-standard, punkttetthet eller en innmålingsrapport?"
+  hint: "For eksempel: FKB-B, 5 pkt/m², ±5 cm"
+comments:
+  ask: "Har du kommentarer til {file} – kjente mangler, begrensninger eller tiltenkt bruk?"
+  hint: "Valgfritt"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LandXML xmlns="http://www.landxml.org/schema/LandXML-1.2" version="1.2" date="2026-10-01" time="10:00:00">
+  <Units><Metric linearUnit="meter" areaUnit="squareMeter" volumeUnit="cubicMeter"/></Units>
+  <CoordinateSystem epsgCode="25832" name="EUREF89 UTM32"/>
+  <Parcels><Parcel name="Planområde Rv 999 Nordby"><CoordGeom><Line><Start>6640400 600300</Start><End>6640150 601500</End></Line><Line><Start>6640150 601500</Start><End>6642000 603900</End></Line><Line><Start>6642000 603900</Start><End>6642800 603500</End></Line><Line><Start>6642800 603500</Start><End>6642500 602200</End></Line><Line><Start>6642500 602200</Start><End>6641200 600500</End></Line><Line><Start>6641200 600500</Start><End>6640400 600300</End></Line></CoordGeom></Parcel></Parcels>
+</LandXML>
