@@ -46,8 +46,8 @@ def main(argv: list[str] | None = None) -> int:
         from starlette.responses import RedirectResponse
         from starlette.routing import Mount, Route
 
-        from .demo import BANNER, USERS, build_demo
-        from .web.app import create_app, demo_user_from_cookie
+        from basedata.selfcheck.demo import BANNER, USERS, build_demo
+        from basedata.ui.web.app import create_app, demo_user_from_cookie
 
         ctx = build_demo()
         inner = create_app(lambda: ctx, demo_user_from_cookie(USERS), demo_users=USERS, banner=BANNER)
@@ -57,16 +57,16 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.cmd == "build-demo":
-        from .demo.build_artifact import build
+        from basedata.selfcheck.demo.build_artifact import build
 
         build(args.out)
         print(f"Wrote {args.out}")
         return 0
 
-    from . import db as dblib
-    from .local import ensure_project, local_user, start_scanner
-    from .settings import Settings
-    from .worker import make_context, run_once
+    from basedata.core import db as dblib
+    from basedata.ui.local import ensure_project, local_user, start_scanner
+    from basedata.core.settings import Settings
+    from basedata.harness.worker import make_context, run_once
 
     settings = Settings.from_env()
     if getattr(args, "folder", None):
@@ -90,7 +90,7 @@ def main(argv: list[str] | None = None) -> int:
         from starlette.responses import RedirectResponse
         from starlette.routing import Mount, Route
 
-        from .web.app import create_app
+        from basedata.ui.web.app import create_app
 
         if project:
             print(f"Prosjekt «{project['name']}» ({project['_id']}): leser {project['source_folder']} …")
@@ -115,7 +115,7 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps({k: result.get(k) for k in ("counts", "errors", "questions_created")}, default=str, indent=2))
         return 1 if result.get("counts", {}).get("errors") else 0
     if args.cmd == "reminders":
-        from .notify import send_reminders
+        from basedata.harness.notify import send_reminders
 
         n = send_reminders(database, settings, ctx.notifier, ctx.now())
         print(f"Laget purringer til {n} opplaster(e). De vises under Varsler i appen.")

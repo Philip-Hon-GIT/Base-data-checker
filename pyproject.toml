@@ -1,6 +1,6 @@
 [project]
 name = "basedata-checker"
-version = "0.2.0"
+version = "0.2.1"
 description = "Checks base data files in a local or OneDrive folder against project requirements and keeps a register in a local SQLite file."
 requires-python = ">=3.12"
 dependencies = ["starlette>=0.37", "uvicorn>=0.29", "openpyxl>=3.1", "pypdf>=4.0",
@@ -14,7 +14,7 @@ dev = ["pytest>=8.0", "reportlab>=4.0"]
 include = ["basedata*"]
 
 [tool.setuptools.package-data]
-basedata = ["data/*.yaml", "prompts/*.yaml", "ai/prompts/*.md", "web/static/*"]
+basedata = ["indata/data/*.yaml", "harness/data/*.yaml", "harness/prompts/*.yaml", "harness/ai/prompts/*.md", "ui/web/static/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

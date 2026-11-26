@@ -148,7 +148,7 @@ lagres. Testene kjøres med `python -m pytest`.
   koordinatene passer («mulig plassering»). Bakgrunnskart fra åpne data: Kartverket topografisk (gråtone
   eller farge, CC BY 4.0) eller OpenStreetMap (ODbL). Kartet er en egen lett kartmotor uten eksterne
   biblioteker.
-- **Reelle fotavtrykk** (`basedata/footprint.py`), ikke bare et rektangel: vektordata tegnes med sin
+- **Reelle fotavtrykk** (`basedata/indata/footprint.py`), ikke bare et rektangel: vektordata tegnes med sin
   egentlige geometri – punkter som punkter, linjer som linjer og flater som flater (SOSI per objekt, DXF per
   element, GeoPackage/GeoJSON/Shapefile per geometritype). Store filer forenkles til et budsjett på 5000
   punkter, og blir det for mye, tegnes omrisset. Punktskyer og høydemodeller får omrisset av cellene som
@@ -167,28 +167,53 @@ lagres. Testene kjøres med `python -m pytest`.
 
 ## Hva ligger hvor
 
+Koden er delt i fem områder. Hvert område har sin egen mappe, og importer går bare «nedover» i denne
+rekkefølgen: **core ← indata ← harness ← ui ← selfcheck** (sjekkes av `tests/core/test_boundaries.py`).
+Testene ligger i en mappe per område under `tests/`.
+
+| Område | Hva det gjør |
+| --- | --- |
+| `basedata/core/` | Kjernen alle bygger på: datamodellen og lagringen, innstillinger, felles tekster og datatyper. |
+| `basedata/indata/` | Alt som har med filene å gjøre: kildemappa, lesere per format, koordinatsystemer, fotavtrykk og høydeflater. |
+| `basedata/harness/` | Kontrollmotoren: arbeideren, regelsettet, vurderingen, AI, chat, spørsmål og varsler. |
+| `basedata/ui/` | Det brukeren ser: tjenestelaget bak sidene, webappen og Excel-eksporten. |
+| `basedata/selfcheck/` | Selvkontroll: demoprosjektet med syntetiske filer og byggeren for den frittstående demosiden. |
+
 | Sti | Hva den gjør |
 | --- | --- |
-| `basedata/folder_source.py` | Eneste kode som vet hvordan filene ligger: leveransemapper, `levering.yaml`, hva som hoppes over. |
-| `basedata/localstore.py` | Den lokale databasen: dokumentene i minnet, hver endring skrevet til SQLite-fila. |
-| `basedata/local.py` | `start`: oppretter prosjektet for mappa, lokal bruker (KS-ansvarlig) og lesing hvert N. minutt. |
-| `basedata/worker.py` | Finner nye og endrede filer i kildemappa, kontrollerer, grupperer i registeret, varsler. |
-| `basedata/entries.py` | Registerradene: pakker, innhold, versjonsforslag og utgått/gjeldende. |
-| `basedata/extract/` | Lesere per format: SOSI, GeoTIFF (+ world file, .prj, .aux.xml), LAS/LAZ, DXF, GeoPackage, GeoJSON, Shapefile, GML, PDF. |
-| `basedata/content.py`, `basedata/relations.py` | Innholdsprofil per fil/registrering, og relasjoner mellom registreringer. |
-| `basedata/extract/textscan.py`, `extract/ifc.py` | Leser tegningshode, koordinater, koordinatsystem og omtaler fra tekst; IFC-leser. |
-| `basedata/chat.py` | AI-chatten: verktøyene, samtalen med Claude/Azure, og offline-erstatningen. |
-| `basedata/surface.py`, `basedata/compare.py` | Høyderutenett fra terrengmodell/punktsky, og sammenligningen med referansen. |
-| `basedata/crs.py` | Norske koordinatsystemer (EUREF89 UTM/NTM, NGO, ED50), plausibilitet og dekning. |
-| `basedata/rules.py`, `data/default_rules_v1.yaml` | Innebygde kontroller og standardregelsettet. |
-| `basedata/ai/` | AI-steget (Claude eller Azure OpenAI over HTTPS), ledetekster for kontroll og regelforslag, validering, og en offline erstatning for demo. |
-| `basedata/questions.py`, `prompts/questions_v1.yaml` | Hvilke spørsmål en registrering trenger, ordlyden, og hvordan svar leses. |
-| `basedata/evaluate.py` | Slår sammen verdier fra fil, opplaster og AI, kjører reglene og sammenligningen, lagrer resultatet. |
-| `basedata/service.py` | Operasjonene bak sidene: register, detalj, svar, KS, beslutning, innstillinger, regelsett. |
-| `basedata/web/` | Starlette-app (JSON-API + grensesnittet). Kan monteres i FastAPI eller Starlette. |
-| `basedata/export_excel.py` | Excel-eksporten. |
-| `basedata/testing/memory_mongo.py` | Spørremotoren (find/update i MongoDB-stil) som den lokale databasen bygger på; ren minneversjon for tester og demo. |
-| `basedata/demo/` | Syntetiske leveranser, demo-historikk og byggeren for den frittstående demosiden. |
+| `core/settings.py` | Innstillinger fra kommandolinje og miljøvariabler. |
+| `core/db.py`, `core/localstore.py` | Samlingene i registeret og den lokale databasen: dokumentene i minnet, hver endring skrevet til SQLite-fila. |
+| `core/memory_mongo.py` | Spørremotoren (find/update i MongoDB-stil) som den lokale databasen bygger på; ren minneversjon for tester og demo. |
+| `core/classify.py`, `core/text.py` | Datatyper og fag, og faste tekster (status, resultat, livsløp). |
+| `indata/folder_source.py` | Eneste kode som vet hvordan filene ligger: leveransemapper, `levering.yaml`, hva som hoppes over. |
+| `indata/extract/` | Lesere per format: SOSI, GeoTIFF (+ world file, .prj, .aux.xml), LAS/LAZ, DXF, GeoPackage, GeoJSON, Shapefile, GML, PDF, IFC, tekst. |
+| `indata/crs.py`, `indata/data/sosi_koordsys.yaml` | Norske koordinatsystemer (EUREF89 UTM/NTM, NGO, ED50), plausibilitet og dekning; SOSI-KOORDSYS-tabellen. |
+| `indata/footprint.py` | Reelle fotavtrykk: punkter, linjer og flater, omriss av punktskyer og høydemodeller. |
+| `indata/surface.py`, `indata/compare.py` | Høyderutenett fra terrengmodell/punktsky, og sammenligningen med referansen. |
+| `indata/content.py` | Innholdsprofil per fil/registrering. |
+| `harness/worker.py` | Finner nye og endrede filer i kildemappa, kontrollerer, grupperer i registeret, varsler. |
+| `harness/rules.py`, `harness/data/default_rules_v1.yaml` | Innebygde kontroller og standardregelsettet. |
+| `harness/evaluate.py` | Slår sammen verdier fra fil, opplaster og AI, kjører reglene og sammenligningen, lagrer resultatet. |
+| `harness/ai/` | AI-steget (Claude eller Azure OpenAI over HTTPS), ledetekster, validering, og en offline erstatning for demo. |
+| `harness/chat.py` | AI-chatten: verktøyene, samtalen med Claude/Azure, og offline-erstatningen. |
+| `harness/questions.py`, `harness/prompts/questions_v1.yaml` | Hvilke spørsmål en registrering trenger, ordlyden, og hvordan svar leses. |
+| `harness/entries.py`, `harness/relations.py` | Registerradene (pakker, versjoner, utgått/gjeldende) og relasjoner mellom registreringer. |
+| `harness/notify.py`, `harness/parsing.py` | Varsler og påminnelser; tolking av dato og koordinatsystem fra fritekst. |
+| `ui/service.py` | Operasjonene bak sidene: register, detalj, svar, KS, beslutning, innstillinger, regelsett. |
+| `ui/web/` | Starlette-app (JSON-API + grensesnittet). Kan monteres i FastAPI eller Starlette. |
+| `ui/local.py` | `start`: oppretter prosjektet for mappa, lokal bruker (KS-ansvarlig) og lesing hvert N. minutt. |
+| `ui/export_excel.py` | Excel-eksporten. |
+| `selfcheck/demo/` | Syntetiske leveranser, demo-historikk og byggeren for den frittstående demosiden. |
+
+## Greiner og arbeidsflyt (git)
+
+- `master` skal alltid være grønn: alle tester kjøres automatisk (GitHub Actions, Windows og Ubuntu) på hver
+  pull request.
+- Nytt arbeid gjøres på en kort gren som heter etter området, for eksempel `indata/onedrive-skip`,
+  `harness/epost-varsler`, `ui/kart-filter` eller `selfcheck/golden-mappe`, og flettes inn i `master` via en
+  pull request innen noen dager.
+- Endringer som går på tvers av områder (som denne mappeflyttingen) får grenen `refactor/…`.
+- Utgivelser merkes med en tag, for eksempel `v0.3.0`.
 
 Leserne er ren Python, så **GDAL trengs ikke**. Er `pyproj`, `rasterio`, `laspy` eller `pyogrio`
 installert, brukes de automatisk (eksakte transformasjoner, flere formater, LAZ).
@@ -234,8 +259,8 @@ setter `BASEDATA_AI_PROVIDER`.
 ## Før dere tar den i bruk på et ekte prosjekt
 
 1. Kjør `start` på en **kopi** av en ekte grunnlagsdatamappe og sammenlign registeret med det dere vet om
-   filene (golden-testen i `tests/test_pipeline.py` viser hvordan).
-2. Kontroller `basedata/data/sosi_koordsys.yaml` mot Kartverkets SOSI-dokumentasjon.
+   filene (golden-testen i `tests/harness/test_pipeline.py` viser hvordan).
+2. Kontroller `basedata/indata/data/sosi_koordsys.yaml` mot Kartverkets SOSI-dokumentasjon.
 3. Bytt eksempelkildene i standardregelsettet («Kontrakt pkt. x.x – avklar …») med kontraktens
    faktiske punkter, og sett toleransene i R-REF-01 sammen med fagansvarlig.
 4. Få AI-leverandøren godkjent før `BASEDATA_AI_PROVIDER` settes. Bare metadata og korte tekstutdrag
@@ -251,6 +276,6 @@ AI-validering og regelforslag, Excel-eksporten og HTTP-API-et. Nytt i 0.2: kilde
 `levering.yaml`, dato fra mappenavn, filer som hoppes over, nye versjoner ved overskriving), at registeret
 i SQLite-fila overlever en omstart, `run --folder` fra kommandolinjen, «Åpne fila» og fil-lenker i Excel.
 
-Testene er kjørt på Linux med Python 3.13. **Ikke testet ennå**: på Windows, på en ekte OneDrive-mappe
+Testene er kjørt på Linux med Python 3.13. Fra 0.2.1 kjøres de også automatisk på Windows og Ubuntu (Python 3.12) på hver pull request, og `tests/core/test_boundaries.py` sjekker at områdene bare importerer nedover. **Ikke testet ennå**: på Windows, på en ekte OneDrive-mappe
 (også filer som bare ligger i skyen), med to personer på samme mappe, med store mengder data (registeret
 holdes i minnet mens appen kjører), og ekte AI-kall og pyproj/rasterio/laspy/pyogrio.
