@@ -5,4 +5,4 @@ optional AI check), keeps a register in a local SQLite file, asks uploaders for 
 lets a reviewer approve files and export the register to Excel.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
